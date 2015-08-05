@@ -21,6 +21,9 @@ def index(request):
 
     if request.method == 'POST':
 
+        path = request.POST['path']
+        print(path)
+
         raw_data = read_files(path)
 
         monthly_data, keys_index = formatting(raw_data)
@@ -195,8 +198,8 @@ def insert_filedata(data):
                                     ))
 
     Filedata.objects.bulk_create(objects)
-    # Filedata.objects.all().delete()
-    # Filename.objects.all().delete()
+    #Filedata.objects.all().delete()
+    #Filename.objects.all().delete()
 
 
 def report1_calc():

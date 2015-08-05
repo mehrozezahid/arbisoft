@@ -7,9 +7,15 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        td{
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <table>
+    <table class="display">
         <thead>
             <tr>
                 <th>Year</th>
@@ -37,7 +43,8 @@
         $('table').DataTable({
             "dom": '<"top"if>rt<"bottom"lp><"clear">'
         });
-    } );
+    });
 </script>
+
 </body>
 </html>
