@@ -1,13 +1,12 @@
 from django.core.urlresolvers import reverse
-from django.db.models import Max, Min, F
+from django.db.models import Min
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 
-import os
-
-# Create your views here.
 from myapp.models import Filename, Filedata
+
+import os
 
 
 def index(request):
@@ -64,6 +63,18 @@ def report1(request):
 
     return render_to_response(
         'myapp/report1.html',
+        {'data': result}, context
+    )
+
+
+def report2(request):
+
+    context = RequestContext(request)
+
+    result = report2_calc()
+
+    return render_to_response(
+        'myapp/report2.html',
         {'data': result}, context
     )
 
@@ -205,4 +216,21 @@ def report1_calc():
         result[d1.year] = {'max_temp': d1.max_temperaturec, 'min_temp': d3[0],
                            'max_humidity': d2.max_humidity, 'min_humidity': d4[0]}
 
+    return result
+
+
+def report2_calc():
+
+    result = {}
+
+    years = Filedata.objects.all().values_list('year').distinct()
+
+    for y in years:
+
+        days_in_year = Filedata.objects.filter(year=y[0])
+        hottest_day = days_in_year.latest('max_temperaturec')
+
+        result[hottest_day.year] = {'Date': hottest_day.pkt, 'Temp': hottest_day.max_temperaturec}
+
+    print result
     return result

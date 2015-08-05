@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report 2</title>
+</head>
+<body>
+    {% for key, value in data.items %}
+        <p> {{ key }}
+        {% for k, v in value.items %}
+            <strong>{{ k }}</strong> {{ v }}
+        {% endfor %}
+        </p>
+    {% endfor %}
+</body>
+</html>
