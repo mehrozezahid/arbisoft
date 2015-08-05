@@ -5,8 +5,12 @@
     <title>Report 1</title>
 </head>
 <body>
-    {% for value in data %}
-        <p>{{ value }}</p>
+    {% for key, value in data.items %}
+        <p>{{ key }}
+        {% for k, v in value.items %}
+            <strong>{{ k }}</strong> {{ v }}
+        {% endfor %}
+        </p>
     {% endfor %}
 </body>
 </html>

@@ -60,38 +60,11 @@ def report1(request):
 
     context = RequestContext(request)
 
-    result = {}
-
-    # file_names = Filename.objects.all()
-
-    # for name in file_names:
-    #
-    #     print(name)
-    #
-    #     days = Filedata.objects.filter(file_name__file_name=name)
-    #     da = days.filter(file_name__file_name__contains='2000')
-    #
-    #     #print da
-    #
-    #     for d in da:
-    #         print d.file_name, d.pkt, d.max_temperaturec
-    #
-    #     break
-
-
-    years = Filedata.objects.all().values_list('year').distinct()
-    for y in years:
-
-        days = Filedata.objects.filter(year=y[0])
-        d1 = days.latest('max_temperaturec')
-        d2 = days.latest('max_humidity')
-        d3 = days.order_by('-min_temperaturec').first()
-
-        print y, d1.year, d1.max_temperaturec, d2.year, d2.max_humidity, d3.year, d3.min_temperaturec
+    result = report1_calc()
 
     return render_to_response(
         'myapp/report1.html',
-        {'data': []}, context
+        {'data': result}, context
     )
 
 
@@ -158,7 +131,6 @@ def formatting(data):
 
 def insert_filenames(raw_data):
 
-    keys = []
     keys = raw_data.keys()
 
     for i in keys:
@@ -216,3 +188,21 @@ def insert_filedata(data):
     # Filename.objects.all().delete()
 
 
+def report1_calc():
+
+    result = {}
+
+    years = Filedata.objects.all().values_list('year').distinct()
+
+    for y in years:
+
+        days = Filedata.objects.filter(year=y[0])
+        d1 = days.latest('max_temperaturec')
+        d2 = days.latest('max_humidity')
+        d3 = days.filter(min_temperaturec__isnull=False).values_list('min_temperaturec').annotate(Min('min_temperaturec')).order_by('min_temperaturec')[0]
+        d4 = days.filter(min_humidity__isnull=False).values_list('min_humidity').annotate(Min('min_humidity')).order_by('min_humidity')[0]
+
+        result[d1.year] = {'max_temp': d1.max_temperaturec, 'min_temp': d3[0],
+                           'max_humidity': d2.max_humidity, 'min_humidity': d4[0]}
+
+    return result
