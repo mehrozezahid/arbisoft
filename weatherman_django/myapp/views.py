@@ -10,6 +10,7 @@ import os
 
 
 def index(request):
+    """View for Index page"""
 
     context = RequestContext(request)
 
@@ -34,6 +35,7 @@ def index(request):
 
 
 def menu(request):
+    """View for Menu page"""
 
     context = RequestContext(request)
 
@@ -51,6 +53,7 @@ def menu(request):
 
 
 def report1(request):
+    """View for Report 1"""
 
     context = RequestContext(request)
 
@@ -63,6 +66,7 @@ def report1(request):
 
 
 def report2(request):
+    """View for Report 2"""
 
     context = RequestContext(request)
 
@@ -75,7 +79,7 @@ def report2(request):
 
 
 def read_files(path):
-    '''reading all input data files from directory'''
+    """reading all input data files from directory"""
 
     data = {}
 
@@ -92,7 +96,6 @@ def formatting(data):
     """Formatting the raw data into ordered key value pairs so that
     values can easily be read"""
 
-    temp_dict_1 = {}
     monthly_data = {}
     keys_index = []
 
@@ -115,7 +118,7 @@ def formatting(data):
 
         monthly_data[key] = value[1:-1]
 
-    #print(monthly_data)
+    # print(monthly_data)
 
     # splitting measurements string for each day into separate values
     for key, value in monthly_data.items():
@@ -131,11 +134,12 @@ def formatting(data):
 
         monthly_data[key] = value[1:]
 
-    #print(keys_index)
-    return (monthly_data, keys_index)
+    # print(keys_index)
+    return monthly_data, keys_index
 
 
 def insert_filenames(raw_data):
+    """Insert filenames in to Filename table of DB"""
 
     keys = raw_data.keys()
 
@@ -146,6 +150,7 @@ def insert_filenames(raw_data):
 
 
 def insert_filedata(data, keys_index):
+    """Insert filedata into Filedata table of DB"""
 
     objects = []
 
@@ -158,6 +163,7 @@ def insert_filedata(data, keys_index):
         # getting the year from file name
         yr = int(str(filename).split("_")[2])
 
+        # appending objects to list for bulk_create
         for i in value:
 
             objects.append(Filedata(file_name=filename, year=yr, pkt=i[keys_index.index('PKT')],
@@ -185,17 +191,22 @@ def insert_filedata(data, keys_index):
                                     wind_dir_degrees=int(i[keys_index.index('WindDirDegrees')]) if i[keys_index.index('WindDirDegrees')].isdigit() else None
                                     ))
 
+    # Inserting into DB
     Filedata.objects.bulk_create(objects)
     # Filedata.objects.all().delete()
     # Filename.objects.all().delete()
 
 
 def report1_calc():
+    """Retrieve Maximum and Minimum Temperature and Humidity data from
+    DB for Report 1"""
 
     result = {}
 
+    # get list of years for which data is present in DB
     years = Filedata.objects.all().values_list('year').distinct()
 
+    # find values for each year
     for y in years:
 
         days = Filedata.objects.filter(year=y[0])
@@ -204,6 +215,7 @@ def report1_calc():
         d3 = days.filter(min_temperaturec__isnull=False).values_list('min_temperaturec').annotate(Min('min_temperaturec')).order_by('min_temperaturec')[0]
         d4 = days.filter(min_humidity__isnull=False).values_list('min_humidity').annotate(Min('min_humidity')).order_by('min_humidity')[0]
 
+        # append to result with the year as key
         result[d1.year] = {'max_temp': d1.max_temperaturec, 'min_temp': d3[0],
                            'max_humidity': d2.max_humidity, 'min_humidity': d4[0]}
 
@@ -211,17 +223,21 @@ def report1_calc():
 
 
 def report2_calc():
+    """Retrieve Hottest day of the year (date and temperature) for each
+     year for Report 2"""
 
     result = {}
 
+    # get list of years for which data is available in DB
     years = Filedata.objects.all().values_list('year').distinct()
 
+    # find values for each year
     for y in years:
 
         days_in_year = Filedata.objects.filter(year=y[0])
         hottest_day = days_in_year.latest('max_temperaturec')
 
+        # append to result with the year as key
         result[hottest_day.year] = {'Date': hottest_day.pkt, 'Temp': hottest_day.max_temperaturec}
 
-    print result
     return result
