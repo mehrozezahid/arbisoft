@@ -13,24 +13,16 @@ def index(request):
 
     context = RequestContext(request)
 
-    #path = p
-    path = '/home/mahrozezahid/Documents/PyCharmProjects/Tasks/weatherdata'
-    raw_data = {}
-    monthly_data = {}
-    keys_index = []
-
     if request.method == 'POST':
 
         path = request.POST['path']
-        print(path)
-
         raw_data = read_files(path)
 
         monthly_data, keys_index = formatting(raw_data)
 
         insert_filenames(raw_data)
 
-        insert_filedata(monthly_data)
+        insert_filedata(monthly_data, keys_index)
 
         return HttpResponseRedirect(reverse('myapp:menu'))
 
@@ -97,8 +89,8 @@ def read_files(path):
 
 
 def formatting(data):
-    '''Formatting the raw data into ordered key value pairs so that
-    values can easily be read'''
+    """Formatting the raw data into ordered key value pairs so that
+    values can easily be read"""
 
     temp_dict_1 = {}
     monthly_data = {}
@@ -153,7 +145,7 @@ def insert_filenames(raw_data):
         p.save()
 
 
-def insert_filedata(data):
+def insert_filedata(data, keys_index):
 
     objects = []
 
@@ -163,43 +155,39 @@ def insert_filedata(data):
         # get the corresponding foreign key object that exists in Filename table in db
         filename = Filename.objects.get(file_name=key)
 
-        print(filename)
-
         # getting the year from file name
         yr = int(str(filename).split("_")[2])
 
-        print yr
-
         for i in value:
 
-            objects.append(Filedata(file_name=filename, year=yr, pkt=i[0],
-                                    max_temperaturec=int(i[1]) if i[1].isdigit() else None,
-                                    mean_temperaturec=int(i[2]) if i[2].isdigit() else None,
-                                    min_temperaturec=int(i[3]) if i[3].isdigit() else None,
-                                    dew_pointc=int(i[4]) if i[4].isdigit() else None,
-                                    meandew_pointc=int(i[5]) if i[5].isdigit() else None,
-                                    mindew_pointc=int(i[6]) if i[6].isdigit() else None,
-                                    max_humidity=int(i[7]) if i[7].isdigit() else None,
-                                    mean_humidity=int(i[8]) if i[8].isdigit() else None,
-                                    min_humidity=int(i[9]) if i[9].isdigit() else None,
-                                    max_sea_level_pressurehPa=int(i[10]) if i[10].isdigit() else None,
-                                    mean_sea_level_pressurehPa=int(i[11]) if i[11].isdigit() else None,
-                                    min_sea_level_pressurehPa=int(i[12]) if i[12].isdigit() else None,
-                                    max_visibilityKm=int(i[13]) if i[13].isdigit() else None,
-                                    mean_visibilityKm=int(i[14]) if i[14].isdigit() else None,
-                                    min_visibilityKm=int(i[15]) if i[15].isdigit() else None,
-                                    max_wind_speedKmh=int(i[16]) if i[16].isdigit() else None,
-                                    mean_wind_speedKmh=int(i[17]) if i[17].isdigit() else None,
-                                    max_gust_speedkmh=int(i[18]) if i[18].isdigit() else None,
-                                    precipitationcm=float(i[19]) if i[19].isdigit() else None,
-                                    cloud_cover=int(i[20]) if i[20].isdigit() else None,
-                                    events=i[21],
-                                    wind_dir_degrees=int(i[22]) if i[22].isdigit() else None
+            objects.append(Filedata(file_name=filename, year=yr, pkt=i[keys_index.index('PKT')],
+                                    max_temperaturec=int(i[keys_index.index('Max TemperatureC')]) if i[keys_index.index('Max TemperatureC')].isdigit() else None,
+                                    mean_temperaturec=int(i[keys_index.index('Mean TemperatureC')]) if i[keys_index.index('Mean TemperatureC')].isdigit() else None,
+                                    min_temperaturec=int(i[keys_index.index('Min TemperatureC')]) if i[keys_index.index('Min TemperatureC')].isdigit() else None,
+                                    dew_pointc=int(i[keys_index.index('Dew PointC')]) if i[keys_index.index('Dew PointC')].isdigit() else None,
+                                    meandew_pointc=int(i[keys_index.index('MeanDew PointC')]) if i[keys_index.index('MeanDew PointC')].isdigit() else None,
+                                    mindew_pointc=int(i[keys_index.index('Min DewpointC')]) if i[keys_index.index('Min DewpointC')].isdigit() else None,
+                                    max_humidity=int(i[keys_index.index('Max Humidity')]) if i[keys_index.index('Max Humidity')].isdigit() else None,
+                                    mean_humidity=int(i[keys_index.index(' Mean Humidity')]) if i[keys_index.index(' Mean Humidity')].isdigit() else None,
+                                    min_humidity=int(i[keys_index.index(' Min Humidity')]) if i[keys_index.index(' Min Humidity')].isdigit() else None,
+                                    max_sea_level_pressurehPa=int(i[keys_index.index(' Max Sea Level PressurehPa')]) if i[keys_index.index(' Max Sea Level PressurehPa')].isdigit() else None,
+                                    mean_sea_level_pressurehPa=int(i[keys_index.index(' Mean Sea Level PressurehPa')]) if i[keys_index.index(' Mean Sea Level PressurehPa')].isdigit() else None,
+                                    min_sea_level_pressurehPa=int(i[keys_index.index(' Min Sea Level PressurehPa')]) if i[keys_index.index(' Min Sea Level PressurehPa')].isdigit() else None,
+                                    max_visibilityKm=int(i[keys_index.index(' Max VisibilityKm')]) if i[keys_index.index(' Max VisibilityKm')].isdigit() else None,
+                                    mean_visibilityKm=int(i[keys_index.index(' Mean VisibilityKm')]) if i[keys_index.index(' Mean VisibilityKm')].isdigit() else None,
+                                    min_visibilityKm=int(i[keys_index.index(' Min VisibilitykM')]) if i[keys_index.index(' Min VisibilitykM')].isdigit() else None,
+                                    max_wind_speedKmh=int(i[keys_index.index(' Max Wind SpeedKm/h')]) if i[keys_index.index(' Max Wind SpeedKm/h')].isdigit() else None,
+                                    mean_wind_speedKmh=int(i[keys_index.index(' Mean Wind SpeedKm/h')]) if i[keys_index.index(' Mean Wind SpeedKm/h')].isdigit() else None,
+                                    max_gust_speedkmh=int(i[keys_index.index(' Max Gust SpeedKm/h')]) if i[keys_index.index(' Max Gust SpeedKm/h')].isdigit() else None,
+                                    precipitationcm=float(i[keys_index.index('PrecipitationCm')]) if i[keys_index.index('PrecipitationCm')].isdigit() else None,
+                                    cloud_cover=int(i[keys_index.index(' CloudCover')]) if i[keys_index.index(' CloudCover')].isdigit() else None,
+                                    events=i[keys_index.index(' Events')],
+                                    wind_dir_degrees=int(i[keys_index.index('WindDirDegrees')]) if i[keys_index.index('WindDirDegrees')].isdigit() else None
                                     ))
 
     Filedata.objects.bulk_create(objects)
-    #Filedata.objects.all().delete()
-    #Filename.objects.all().delete()
+    # Filedata.objects.all().delete()
+    # Filename.objects.all().delete()
 
 
 def report1_calc():
