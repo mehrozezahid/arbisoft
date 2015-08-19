@@ -12,7 +12,7 @@ class Person(models.Model):
     cache_key = u'person_{}'
 
     def __unicode__(self):
-        return "{fname} {lname}".format(fname=self.first_name, lname=self.last_name)
+        return u"{fname} {lname}".format(fname=self.first_name, lname=self.last_name)
 
     # def save(self, *args, **kwargs):
     #     """Overridden save function"""

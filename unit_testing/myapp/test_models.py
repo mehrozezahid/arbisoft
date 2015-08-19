@@ -16,12 +16,12 @@ class PersonModelTest(TestCase):
     #     self.assertEqual(person_2.last_name, "World")
 
     def test_cache(self):
-        self.fname = 'Mehroze'
-        self.lname = 'Zahid'
-        self.email = 'hello@world.com'
+        fname = 'Mehroze'
+        lname = 'Zahid'
+        email = 'hello@world.com'
 
-        Person.objects.create(email=self.email, first_name=self.fname, last_name=self.lname)
+        Person.objects.create(email=email, first_name=fname, last_name=lname)
 
         with self.assertNumQueries(1):
-            Person.get_person(self.email)
-            Person.get_person(self.email)
+            Person.get_person(email)
+            Person.get_person(email)
