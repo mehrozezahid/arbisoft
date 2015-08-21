@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather report portal</title>
+</head>
+<body>
+
+    <h1>Welcome to the weather data portal</h1>
+
+    <form id="path" method="post" action="/myapp/index/">
+        {% csrf_token %}
+
+        <p>Enter the data files path here:
+            <input id="p" type="text" name="path">
+        </p>
+
+        <input type="submit" name="submit" value="Load data" />
+    </form>
+</body>
+</html>

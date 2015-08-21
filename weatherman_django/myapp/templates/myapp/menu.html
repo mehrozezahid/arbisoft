@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose report</title>
+</head>
+<body>
+    <strong>Data has been loaded into database!</strong> <br /> <br />
+    <form id=user method="post" action="/myapp/menu/">
+       {% csrf_token %}
+       <input type="submit" name="report1" value="View Report 1" />
+       <input type="submit" name="report2" value="View Report 2" />
+    </form>
+</body>
+</html>
