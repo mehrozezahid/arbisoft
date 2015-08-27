@@ -7,9 +7,10 @@
 <body>
 
 {% if user.is_authenticated %}
-    <strong>Congratulations! You're logged in!</strong> <br />
-    <a href= "/myapp/logout"> Logout </a>
-    <a href= "/myapp/profile"> Profile </a>
+    <strong>Congratulations! You're logged in!</strong> <br \> <br \>
+    <button onclick="location.href='/myapp/profile'">Profile</button>
+    <button onclick="location.href='/myapp/uploadpicture'">Upload Picture</button>
+    <button onclick="location.href='/myapp/logout'">Logout</button>
 
 {% else %}
 
