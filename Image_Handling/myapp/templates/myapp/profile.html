@@ -7,7 +7,8 @@
     <h2>Hello {{ user.username }}. You can only see this if you're logged in.</h2>
 
     {% if pic %}
-        <img src="{{ pic.picture.url }}" alt="{{ pic.picture.name }}" /> <br \><br \>
+{#        <img src="{{ pic.picture.url }}" alt="{{ pic.picture.name }}" /> <br \><br \>#}
+        <img src="{{ MEDIA_URL }}{{ pic }}" alt="{{ MEDIA_URL }}{{ pic }}">
 
     {% else %}
         <p>You have no picture</p> <br \>

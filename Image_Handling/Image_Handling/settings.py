@@ -85,6 +85,6 @@ STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
 
-MEDIA_ROOT = '/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Image_Handling/myapp/'
+MEDIA_ROOT = '/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Image_Handling/myapp/images/'
 
-MEDIA_URL = '/images/'
+MEDIA_URL = '/media/'

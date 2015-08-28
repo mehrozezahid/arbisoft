@@ -34,6 +34,7 @@ def sign_up(request):
 
 
 def login_view(request):
+
     if request.user.is_authenticated():
         user = request.user
         user_form = UserLogin()
@@ -63,10 +64,11 @@ def login_view(request):
         else:
             user = UserLogin()
 
-        return render_to_response(
-            'myapp/login.html',
-            {'form': user_form, 'user': user, 'error': error}, context
-        )
+
+    return render_to_response(
+        'myapp/login.html',
+        {'form': user_form, 'user': user, 'error': error}, context
+    )
 
 
 @login_required(login_url='/myapp/login')
@@ -78,22 +80,16 @@ def upload_picture(request):
         pic_form = UploadPictureForm(request.POST, request.FILES)
 
         if pic_form.is_valid():
-            # path = pic_form.save_image(request.user, request.FILES['picture'])
-            # UserProfile.objects.create(user=user, picture=path)
-            # obj = UserProfile(user=user, picture=pic_form.cleaned_data['picture'])
-            # m = UserProfile()
-            # m.user = user
-            # m.picture = request.FILES['image']
-            # print m.picture
-            # m.save()
-            try:
-                m = UserProfile.objects.get(user=user)
-                m.picture.delete()
-                m.picture = request.FILES['picture']
-                m.save()
-
-            except ObjectDoesNotExist:
-                UserProfile.objects.create(user=user, picture=request.FILES['picture'])
+            path = pic_form.save_image(request.user, request.FILES['picture'])
+            UserProfile.objects.create(user=user, picture=path)
+            # try:
+            #     m = UserProfile.objects.get(user=user)
+            #     m.picture.delete()
+            #     m.picture = request.FILES['picture']
+            #     m.save()
+            #
+            # except ObjectDoesNotExist:
+            #     UserProfile.objects.create(user=user, picture=request.FILES['picture'])
 
             HttpResponseRedirect('myapp/profile')
 
@@ -108,13 +104,15 @@ def profile(request):
     context = RequestContext(request)
     user = request.user
 
-    try:
-        obj = UserProfile.objects.get(user=user)
+    # try:
+    #     obj = UserProfile.objects.get(user=user)
+    #
+    # except ObjectDoesNotExist:
+    #     obj = None
 
-    except ObjectDoesNotExist:
-        obj = None
+    pic_path = UploadPictureForm.get_image(user)
 
     return render_to_response(
         'myapp/profile.html',
-        {'pic': obj, 'user': user}, context
+        {'pic': pic_path, 'user': user}, context
     )
