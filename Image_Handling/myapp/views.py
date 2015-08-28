@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -9,7 +10,6 @@ from models import UserProfile
 
 def sign_up(request):
     context = RequestContext(request)
-
     registered = False
 
     if request.method == 'POST':
@@ -68,9 +68,6 @@ def login_view(request):
             {'form': user_form, 'user': user, 'error': error}, context
         )
 
-# @login_required(login_url='/login')
-# def picture(request):
-
 
 @login_required(login_url='/myapp/login')
 def upload_picture(request):
@@ -81,9 +78,24 @@ def upload_picture(request):
         pic_form = UploadPictureForm(request.POST, request.FILES)
 
         if pic_form.is_valid():
-            path = pic_form.save_image(request.user, request.FILES['picture'])
-            UserProfile.objects.create(user=user, picture=path)
-            HttpResponseRedirect('/myapp/profile')  # profile page not yet implemented
+            # path = pic_form.save_image(request.user, request.FILES['picture'])
+            # UserProfile.objects.create(user=user, picture=path)
+            # obj = UserProfile(user=user, picture=pic_form.cleaned_data['picture'])
+            # m = UserProfile()
+            # m.user = user
+            # m.picture = request.FILES['image']
+            # print m.picture
+            # m.save()
+            try:
+                m = UserProfile.objects.get(user=user)
+                m.picture.delete()
+                m.picture = request.FILES['picture']
+                m.save()
+
+            except ObjectDoesNotExist:
+                UserProfile.objects.create(user=user, picture=request.FILES['picture'])
+
+            HttpResponseRedirect('myapp/profile')
 
     else:
         pic_form = UploadPictureForm()
@@ -93,10 +105,16 @@ def upload_picture(request):
 
 @login_required(login_url='/myapp/login')
 def profile(request):
-
+    context = RequestContext(request)
     user = request.user
+
+    try:
+        obj = UserProfile.objects.get(user=user)
+
+    except ObjectDoesNotExist:
+        obj = None
 
     return render_to_response(
         'myapp/profile.html',
-        {'user': user}
+        {'pic': obj, 'user': user}, context
     )

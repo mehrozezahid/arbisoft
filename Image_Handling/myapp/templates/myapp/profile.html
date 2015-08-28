@@ -1,12 +1,20 @@
 <html>
-    <head>
-        <title>Profile page</title>
-    </head>
+<head>
+    <title>Profile page</title>
+</head>
+<body>
 
-    <body>
+    <h2>Hello {{ user.username }}. You can only see this if you're logged in.</h2>
 
-        <h2>Hello {{ user.username }}. You can only see this if you're logged in.</h2>
+    {% if pic %}
+        <img src="{{ pic.picture.url }}" alt="{{ pic.picture.name }}" /> <br \><br \>
 
-    </body>
+    {% else %}
+        <p>You have no picture</p> <br \>
+    {% endif %}
 
+    <button onclick="location.href='/myapp/uploadpicture'">Upload Picture</button>
+    <button onclick="location.href='/myapp/logout'">Logout</button>
+
+</body>
 </html>
