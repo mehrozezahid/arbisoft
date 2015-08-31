@@ -87,5 +87,4 @@ TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'myapp/images/')
 
-
 MEDIA_URL = '/media/'

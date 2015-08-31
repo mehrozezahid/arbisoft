@@ -1,4 +1,5 @@
 from datetime import datetime
+from PIL import Image
 import os
 import errno
 import shutil
@@ -62,6 +63,8 @@ class UploadPictureForm(forms.Form):
             destination.write(chunk)
             destination.close()
 
+        self.create_thumbnails(directory)
+
         # return path to image
         return directory
 
@@ -76,3 +79,15 @@ class UploadPictureForm(forms.Form):
             pic_path = None
 
         return pic_path
+
+    def create_thumbnails(self, image):
+        # list of sizes for which thumbnail is generated
+        sizes = [(120, 120), (720, 720), (1600, 1600)]
+
+        for size in sizes:
+            img = Image.open(image)
+            img.thumbnail(size)
+            try:
+                img.save(image + "_{size}".format(size=size), "JPEG")
+            except AttributeError:
+                print("Couldn't save image")
