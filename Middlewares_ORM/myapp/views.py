@@ -5,7 +5,7 @@ from myapp.forms import UserForm
 
 def login_view(request):
 
-    if request.user.is_authenticated():
+    if hasattr(request, 'user') and request.user.is_authenticated():
         user = request.user
         user_form = UserForm()
         error = None
@@ -17,7 +17,7 @@ def login_view(request):
     else:
         context = RequestContext(request)
         user_form = UserForm(data=request.POST)
-        user = request.user
+        user = None
         error = None
 
     return render_to_response(
