@@ -1,0 +1,49 @@
+[08/Sep/2015 11:59:08] ERROR [django.request:224] Internal Server Error: /myapp/login/
+Traceback (most recent call last):
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Envs/Django_Projects/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 112, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Middlewares_ORM/myapp/views.py", line 33, in login_view
+    user = authenticate(email=email, password=password)
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Envs/Django_Projects/local/lib/python2.7/site-packages/django/contrib/auth/__init__.py", line 49, in authenticate
+    user = backend.authenticate(**credentials)
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Middlewares_ORM/Middlewares_ORM/backend/auth_backend.py", line 15, in authenticate
+    logger2.info("Logging in using email")
+NameError: global name 'logger2' is not defined
+[08/Sep/2015 12:03:02] WARNING [django.request:143] Not Found: /favicon.ico
+[08/Sep/2015 12:03:02] WARNING [django.request:143] Not Found: /favicon.ico
+[08/Sep/2015 13:24:59] ERROR [django.request:224] Internal Server Error: /myapp/login
+Traceback (most recent call last):
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Envs/Django_Projects/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 112, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Middlewares_ORM/myapp/views.py", line 29, in login_view
+    email = request.POST['email']
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Envs/Django_Projects/local/lib/python2.7/site-packages/django/utils/datastructures.py", line 301, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+MultiValueDictKeyError: "'email'"
+[08/Sep/2015 13:25:25] ERROR [django.request:224] Internal Server Error: /myapp/login
+Traceback (most recent call last):
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Envs/Django_Projects/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 112, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Middlewares_ORM/myapp/views.py", line 29, in login_view
+    email = request.POST['email']
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Envs/Django_Projects/local/lib/python2.7/site-packages/django/utils/datastructures.py", line 301, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+MultiValueDictKeyError: "'email'"
+[08/Sep/2015 13:26:11] ERROR [django.request:224] Internal Server Error: /myapp/login
+Traceback (most recent call last):
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Envs/Django_Projects/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 112, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Middlewares_ORM/myapp/views.py", line 29, in login_view
+    email = request.POST['email']
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Envs/Django_Projects/local/lib/python2.7/site-packages/django/utils/datastructures.py", line 301, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+MultiValueDictKeyError: "'email'"
+[08/Sep/2015 13:26:54] ERROR [django.request:224] Internal Server Error: /myapp/login
+Traceback (most recent call last):
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Envs/Django_Projects/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 112, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Middlewares_ORM/myapp/views.py", line 29, in login_view
+    email = request.POST['email']
+  File "/home/mahrozezahid/Documents/PyCharmProjects/Tasks/Envs/Django_Projects/local/lib/python2.7/site-packages/django/utils/datastructures.py", line 301, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+MultiValueDictKeyError: "'email'"
